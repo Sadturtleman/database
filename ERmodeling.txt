@@ -1,0 +1,23 @@
+기존
+movie_info(movie_name, movie_engname, create_year, movie_type, genre, movie_state, director, company, nation, movieid)
+
+
+multi value attr ->genre, company, nation
+m:n attr -> director
+
+ER modeling
+
+movie_info(mid, movie_name, movie_engname, create_year, movie_type, movie_state)
+movie_genre(mid, genre)
+movie_company(mid, company)
+director(did, dname)
+cast(mid, did)
+
+
+table
+
+movie_info(mid, movie_name, movie_engname, create_year, movie_type, movie_state) 식별자 mid
+movie_genre(mgid, mid, genre) 식별자 mgid, 외래키 mid
+movie_company(mcid, mid, company) 식별자 mcid 외래키 mid
+director(did, dname) 식별자 did 외래키 dname
+cast(cid, mid, did) 식별자 cid, 외래키 mid, did
