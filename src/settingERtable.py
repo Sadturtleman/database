@@ -2,8 +2,9 @@ import pymysql
 
 # DB 연결
 conn = pymysql.connect(
-    host='localhost',
+    host='ksisem0811-database.duckdns.org',
     user='bmlee77',
+    port=3306,
     password='bmlee77',
     database='dbsubject',
     charset='utf8mb4',
@@ -16,7 +17,7 @@ cursor.execute("SELECT * FROM movie_info")
 rows = cursor.fetchall()
 
 for row in rows:
-    moviename, movieengname, createdate, movietype, genre_str, moviestate, director_str, company_str, nation, movieid = row
+    moviename, movieengname, createdate, movietype, genre_str, moviestate, director_str, company_str, nation_str, movieid = row
 
     # 1. movie 테이블에 INSERT
     cursor.execute("""
@@ -27,21 +28,28 @@ for row in rows:
     # 새로 생성된 mid 가져오기
     mid = cursor.lastrowid
 
-    # 2. genre 테이블에 INSERT (콤마로 분리)
+    # 2. genre 테이블에 INSERT
     genres = [g.strip() for g in genre_str.split(',')] if genre_str else []
     for genre in genres:
         cursor.execute("""
             INSERT INTO movie_genre(genre, mid) VALUES (%s, %s)
         """, (genre, mid))
 
-    # 3. company 테이블 INSERT
+    # 3. nation 테이블 INSERT
+    nations = [n.strip() for n in nation_str.split(',')] if nation_str else []
+    for nation in nations:
+        cursor.execute("""
+            INSERT INTO movie_nation(nation, mid) VALUES (%s, %s)
+        """, (nation, mid))
+
+    # 4. company 테이블 INSERT
     companies = [c.strip() for c in company_str.split(',')] if company_str else []
     for company in companies:
         cursor.execute("""
             INSERT INTO movie_company(company, mid) VALUES (%s, %s)
         """, (company, mid))
 
-    # 4. 감독 처리 (director + casting)
+    # 5. 감독 처리 (director + casting)
     directors = [d.strip() for d in director_str.split(',')] if director_str else []
     for dname in directors:
         # 감독 중복 체크
@@ -56,7 +64,8 @@ for row in rows:
 
         cursor.execute("INSERT INTO casting(mid, did) VALUES (%s, %s)", (mid, did))
 
-print("정규화 테이블에 데이터 이관 완료!")
+    print(row)
+print("✅ 정규화 테이블에 데이터 이관 완료!")
 
 cursor.close()
 conn.close()

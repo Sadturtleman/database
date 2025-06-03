@@ -47,3 +47,12 @@ create table casting(
     on update cascade
     on delete restrict
 );
+
+CREATE TABLE `movie_nation` (
+  `mnid` int NOT NULL AUTO_INCREMENT,
+  `nation` varchar(255) DEFAULT NULL,
+  `mid` int DEFAULT NULL,
+  PRIMARY KEY (`mnid`),
+  KEY `mid` (`mid`),
+  CONSTRAINT `movie_nation_ibfk_1` FOREIGN KEY (`mid`) REFERENCES `movie` (`mid`) ON DELETE RESTRICT ON UPDATE CASCADE
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
