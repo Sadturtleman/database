@@ -16,7 +16,7 @@ cursor = conn.cursor()
 cursor.execute("SELECT * FROM movie_info")
 rows = cursor.fetchall()
 
-for row in rows:
+for index, row in enumerate(rows):
     moviename, movieengname, createdate, movietype, genre_str, moviestate, director_str, company_str, nation_str, movieid = row
 
     # 1. movie 테이블에 INSERT
@@ -64,7 +64,7 @@ for row in rows:
 
         cursor.execute("INSERT INTO casting(mid, did) VALUES (%s, %s)", (mid, did))
 
-    print(row)
+    print(index, row)
 print("✅ 정규화 테이블에 데이터 이관 완료!")
 
 cursor.close()
