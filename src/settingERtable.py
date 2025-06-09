@@ -65,7 +65,7 @@ for index, row in enumerate(rows):
         cursor.execute("INSERT INTO casting(mid, did) VALUES (%s, %s)", (mid, did))
 
     print(index, row)
-print("✅ 정규화 테이블에 데이터 이관 완료!")
+print("정규화 테이블에 데이터 이관 완료!")
 
 cursor.close()
 conn.close()
