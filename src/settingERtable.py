@@ -2,7 +2,7 @@ import pymysql
 
 # DB 연결
 conn = pymysql.connect(
-    host='ksisem0811-database.duckdns.org',
+    host='localhost',
     user='bmlee77',
     port=3306,
     password='bmlee77',
